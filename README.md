@@ -1,2 +1,5 @@
-# mobflix_1.0
- Flutter App
+## App de Trailers - Mobflix
+
+
+
+Projeto criado no Alura Challenge

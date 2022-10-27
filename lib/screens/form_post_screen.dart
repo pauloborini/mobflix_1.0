@@ -88,7 +88,7 @@ class _FormPostScreenState extends State<FormPostScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context)
-                            .pushReplacementNamed("/dashboard");
+                            .pushReplacementNamed("/initial_screen");
                       },
                       child: SizedBox(
                         child: Row(

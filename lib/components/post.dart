@@ -4,10 +4,10 @@ import 'package:url_launcher/url_launcher.dart';
 class Post extends StatefulWidget {
   final int id;
   final String linkyoutube;
-  final String nomeCategoria;
-  final int corCategoria;
+  final String nameCategory;
+  final int colorCategory;
 
-  const Post(this.id, this.linkyoutube, this.nomeCategoria, this.corCategoria,
+  const Post(this.id, this.linkyoutube, this.nameCategory, this.colorCategory,
       {super.key});
 
   @override
@@ -59,9 +59,9 @@ class _PostState extends State<Post> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  backgroundColor: Color(widget.corCategoria)),
+                  backgroundColor: Color(widget.colorCategory)),
               onPressed: () {},
-              child: Text(widget.nomeCategoria,
+              child: Text(widget.nameCategory,
                   style: const TextStyle(fontSize: 16))),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),

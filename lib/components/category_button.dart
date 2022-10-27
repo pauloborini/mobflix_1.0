@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mobflix/data/post_dao.dart';
 import 'package:mobflix/screens/find_screen.dart';
 
-class BotaoCategoriaFront extends StatelessWidget {
-  final String nomeCategoria;
-  final Color corCategoria;
-  final String buscaCategoria;
+class CategoryButtonFront extends StatelessWidget {
+  final String nameCategory;
+  final Color colorCategory;
+  final String searchCategory;
 
-  const BotaoCategoriaFront(
+  const CategoryButtonFront(
       {super.key,
-      required this.nomeCategoria,
-      required this.corCategoria,
-      required this.buscaCategoria});
+      required this.nameCategory,
+      required this.colorCategory,
+      required this.searchCategory});
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +21,18 @@ class BotaoCategoriaFront extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              backgroundColor: corCategoria),
+              backgroundColor: colorCategory),
           onPressed: () {
-            PostDao().find(buscaCategoria);
+            PostDao().find(searchCategory);
             Navigator.of(context).push(MaterialPageRoute(builder: (contextNew) {
               return FindScreen(
-                  categoriaBuscada: buscaCategoria,
-                  nomeCategoria: nomeCategoria,
-                  corCategoria: corCategoria);
+                  selectedCategory: searchCategory,
+                  nameCategory: nameCategory,
+                  colorCategory: colorCategory);
             }));
           },
           child: Text(
-            nomeCategoria,
+            nameCategory,
             style: const TextStyle(fontSize: 16),
           )),
     );

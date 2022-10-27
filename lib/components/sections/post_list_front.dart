@@ -3,14 +3,14 @@ import 'package:mobflix/data/post_dao.dart';
 import '../circular_progress.dart';
 import '../post.dart';
 
-class ListaPostagens extends StatefulWidget {
-  const ListaPostagens({Key? key}) : super(key: key);
+class PostListFront extends StatefulWidget {
+  const PostListFront({Key? key}) : super(key: key);
 
   @override
-  State<ListaPostagens> createState() => _ListaPostagensState();
+  State<PostListFront> createState() => _PostListFrontState();
 }
 
-class _ListaPostagensState extends State<ListaPostagens> {
+class _PostListFrontState extends State<PostListFront> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,9 +37,9 @@ class _ListaPostagensState extends State<ListaPostagens> {
                     reverse: false,
                     itemCount: items.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final Post postagens = items[index];
+                      final Post posts = items[index];
                       return Dismissible(
-                        key: ValueKey<Post>(postagens),
+                        key: ValueKey<Post>(posts),
                         direction: DismissDirection.startToEnd,
                         onDismissed: (direction) {
                           setState(() {});
@@ -58,11 +58,11 @@ class _ListaPostagensState extends State<ListaPostagens> {
                                       onPressed: () {
                                         Navigator.of(context).pop(true);
                                         PostDao().delete(
-                                            postagens.linkyoutube);
+                                            posts.linkyoutube);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                                 content: Text(
-                                                    '${postagens.linkyoutube} apagada')));
+                                                    '${posts.linkyoutube} apagada')));
                                       },
                                       child: const Text("Deletar")),
                                   ElevatedButton(
@@ -87,7 +87,7 @@ class _ListaPostagensState extends State<ListaPostagens> {
                             ),
                           ),
                         ),
-                        child: Container(child: postagens),
+                        child: Container(child: posts),
                       );
                     },
                   );
@@ -110,7 +110,7 @@ class _ListaPostagensState extends State<ListaPostagens> {
                 ),
               ));
           }
-          return const Text('Unknown Error');
+          return const Text('Aguarde...');
         },
       ),
     );

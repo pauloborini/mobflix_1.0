@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/botao_categoria.dart';
+import '../components/category_button.dart';
 import '../components/circular_progress.dart';
 import '../components/post.dart';
 import '../data/post_dao.dart';
@@ -7,14 +7,14 @@ import '../data/post_dao.dart';
 class FindScreen extends StatefulWidget {
   const FindScreen({
     Key? key,
-    required this.categoriaBuscada,
-    required this.nomeCategoria,
-    required this.corCategoria,
+    required this.selectedCategory,
+    required this.nameCategory,
+    required this.colorCategory,
   }) : super(key: key);
 
-  final String categoriaBuscada;
-  final String nomeCategoria;
-  final Color corCategoria;
+  final String selectedCategory;
+  final String nameCategory;
+  final Color colorCategory;
 
   @override
   State<FindScreen> createState() => _FindScreenState();
@@ -55,10 +55,10 @@ class _FindScreenState extends State<FindScreen> {
                     'Categoria:',
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
-                  BotaoCategoriaFront(
-                    nomeCategoria: widget.nomeCategoria,
-                    corCategoria: widget.corCategoria,
-                    buscaCategoria: widget.categoriaBuscada,
+                  CategoryButtonFront(
+                    nameCategory: widget.nameCategory,
+                    colorCategory: widget.colorCategory,
+                    searchCategory: widget.selectedCategory,
                   )
                 ],
               ),
@@ -70,7 +70,7 @@ class _FindScreenState extends State<FindScreen> {
               width: double.maxFinite,
               height: double.maxFinite,
               child: FutureBuilder<List<Post>>(
-                future: PostDao().find(widget.categoriaBuscada),
+                future: PostDao().find(widget.selectedCategory),
                 builder: (context, snapshot) {
                   List<Post>? items = snapshot.data?.reversed.toList();
                   switch (snapshot.connectionState) {
@@ -89,9 +89,9 @@ class _FindScreenState extends State<FindScreen> {
                             reverse: false,
                             itemCount: items.length,
                             itemBuilder: (BuildContext context, int index) {
-                              final Post postagens = items[index];
+                              final Post posts = items[index];
                               return Dismissible(
-                                key: ValueKey<Post>(postagens),
+                                key: ValueKey<Post>(posts),
                                 direction: DismissDirection.startToEnd,
                                 onDismissed: (direction) {
                                   setState(() {});
@@ -110,11 +110,11 @@ class _FindScreenState extends State<FindScreen> {
                                               onPressed: () {
                                                 Navigator.of(context).pop(true);
                                                 PostDao().delete(
-                                                    postagens.linkyoutube);
+                                                    posts.linkyoutube);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(SnackBar(
                                                         content: Text(
-                                                            '${postagens.linkyoutube} apagada')));
+                                                            '${posts.linkyoutube} apagada')));
                                               },
                                               child: const Text("Deletar")),
                                           ElevatedButton(
@@ -139,7 +139,7 @@ class _FindScreenState extends State<FindScreen> {
                                     ),
                                   ),
                                 ),
-                                child: Container(child: postagens),
+                                child: Container(child: posts),
                               );
                             },
                           );
@@ -156,13 +156,13 @@ class _FindScreenState extends State<FindScreen> {
                               Icons.error_outline,
                               size: 56,
                             ),
-                            Text('Sem postagens dessa categoria',
+                            Text('Sem posts dessa categoria',
                                 style: TextStyle(fontSize: 20))
                           ],
                         ),
                       ));
                   }
-                  return const Text('Unknown Error');
+                  return const Text('Erro desconhecido');
                 },
               ),
             ),

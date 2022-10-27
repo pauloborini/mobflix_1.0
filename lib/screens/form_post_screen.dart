@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:mobflix/data/post_dao.dart';
 import '../components/post.dart';
 
-class FormPost extends StatefulWidget {
-  const FormPost({
+class FormPostScreen extends StatefulWidget {
+  const FormPostScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<FormPost> createState() => _FormPostState();
+  State<FormPostScreen> createState() => _FormPostScreenState();
 }
 
-class _FormPostState extends State<FormPost> {
+class _FormPostScreenState extends State<FormPostScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController urlController = TextEditingController();
-  String categoriaController = '';
-  int corController = 0;
+  String categoryController = '';
+  int colorController = 0;
   final String noPhoto = 'assets/images/noLink.png';
   int _indexController = 0;
-  bool opacidade = false;
+  bool opacity = false;
 
   String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
     if (!url.contains("http") && (url.length == 11)) return url;
@@ -48,7 +48,7 @@ class _FormPostState extends State<FormPost> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, int> mapCat = {
+    final Map<String, int> categoryMap = {
       'Ação': -14049492,
       'Terror': -2350542,
       'Suspense': -16777216,
@@ -66,8 +66,8 @@ class _FormPostState extends State<FormPost> {
       'Guerra': -13251864,
     };
 
-    final List<String> listaKeys = mapCat.keys.toList();
-    final List<int> listaValues = mapCat.values.toList();
+    final List<String> keysList = categoryMap.keys.toList();
+    final List<int> valuesList = categoryMap.values.toList();
 
     return Form(
       key: _formKey,
@@ -86,7 +86,6 @@ class _FormPostState extends State<FormPost> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      /// BOTÃO DE VOLTAR - INICIO
                       onTap: () {
                         Navigator.of(context)
                             .pushReplacementNamed("/dashboard");
@@ -104,7 +103,6 @@ class _FormPostState extends State<FormPost> {
                       ),
                     ),
 
-                    /// BOTÃO DE VOLTAR
                     const Padding(
                       padding: EdgeInsets.fromLTRB(30, 8, 30, 30),
                       child: Text(
@@ -128,7 +126,6 @@ class _FormPostState extends State<FormPost> {
                       ),
                     ),
                     Padding(
-                      /// FORM URL - INICIO
                       padding: const EdgeInsets.fromLTRB(30, 4, 30, 24),
                       child: TextFormField(
                         validator: (String? value) {
@@ -158,7 +155,6 @@ class _FormPostState extends State<FormPost> {
                       ),
                     ),
 
-                    /// FORM URL
                     const Padding(
                       padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                       child: Text(
@@ -171,10 +167,9 @@ class _FormPostState extends State<FormPost> {
                       ),
                     ), //
                     Padding(
-                      /// DROPDOWN BUTTON - INICIO
                       padding: const EdgeInsets.fromLTRB(30, 4, 30, 24),
                       child: DropdownButtonFormField(
-                          items: mapCat.keys
+                          items: categoryMap.keys
                               .map<DropdownMenuItem<String>>((String key) {
                             return DropdownMenuItem<String>(
                               value: key,
@@ -183,10 +178,10 @@ class _FormPostState extends State<FormPost> {
                           }).toList(),
                           onChanged: (value) {
                             setState(() {
-                              opacidade = true;
-                              _indexController = (listaKeys.indexOf(value!));
-                              categoriaController = listaKeys[_indexController];
-                              corController = listaValues[_indexController];
+                              opacity = true;
+                              _indexController = (keysList.indexOf(value!));
+                              categoryController = keysList[_indexController];
+                              colorController = valuesList[_indexController];
                             });
                           },
                           dropdownColor: Colors.black,
@@ -204,7 +199,6 @@ class _FormPostState extends State<FormPost> {
                           )),
                     ),
 
-                    /// DROPDOWN BUTTON
                     const Padding(
                       padding: EdgeInsets.fromLTRB(30, 0, 30, 8),
                       child: Text(
@@ -217,10 +211,9 @@ class _FormPostState extends State<FormPost> {
                       ),
                     ),
                     Padding(
-                      /// PREVIEW - INICIO
                       padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                       child: AnimatedOpacity(
-                        opacity: opacidade ? 1 : 0,
+                        opacity: opacity ? 1 : 0,
                         duration: const Duration(milliseconds: 100),
                         child: SizedBox(
                           child: ElevatedButton(
@@ -228,8 +221,8 @@ class _FormPostState extends State<FormPost> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                backgroundColor: Color(corController)),
-                            child: Text(categoriaController),
+                                backgroundColor: Color(colorController)),
+                            child: Text(categoryController),
                             onPressed: () {},
                           ),
                         ),
@@ -259,10 +252,7 @@ class _FormPostState extends State<FormPost> {
                         ),
                       ),
                     ),
-
-                    /// PREVIEW
                     Padding(
-                      /// CADASTRAR BUTTON - INICIO
                       padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                       child: SizedBox(
                         width: double.maxFinite,
@@ -270,35 +260,32 @@ class _FormPostState extends State<FormPost> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              final int idCorreto =
-                                  await PostDao().pegarTamanhoDB();
+                              final int correctID =
+                                  await PostDao().getLengthDB();
 
                               await PostDao().save(Post(
-                                  idCorreto,
+                                  correctID,
                                   urlController.text,
-                                  categoriaController,
-                                  corController));
+                                  categoryController,
+                                  colorController));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Post criado'),
                                 ),
                               );
                               Navigator.of(context)
-                                  .pushReplacementNamed("/dashboard");
+                                  .pushReplacementNamed("/initial_screen");
                             }
                           },
                           child: const Text(
                             'Cadastrar',
                             style: TextStyle(
                                 fontSize: 18,
-                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
                     ),
-
-                    /// CADASTRAR BUTTON
                   ],
                 ),
               ),

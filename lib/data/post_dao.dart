@@ -3,84 +3,84 @@ import 'database.dart';
 import 'package:sqflite/sqflite.dart';
 
 class PostDao {
-  static const String tableSql = 'CREATE TABLE $_posttable('
+  static const String tableSql = 'CREATE TABLE $_postsTable('
       '$_id INTEGER PRIMARY KEY, '
       '$_linkyoutube TEXT, '
-      '$_nomeCategoria TEXT, '
-      '$_corCategoria INTEGER)';
+      '$_nameCategory TEXT, '
+      '$_colorCategory INTEGER)';
 
-  static const String _posttable = 'postTable';
+  static const String _postsTable = 'postsTable';
   static const String _id = 'id';
   static const String _linkyoutube = 'linkyoutube';
-  static const String _nomeCategoria = 'nomeCategoria';
-  static const String _corCategoria = 'corCategoria';
+  static const String _nameCategory = 'nameCategory';
+  static const String _colorCategory = 'colorCategory';
 
-  save(Post postagem) async {
-    final Database bancoDeDados = await getDatabase();
-    var itemExists = await find(postagem.linkyoutube);
+  save(Post post) async {
+    final Database dataBaselocal = await getDatabase();
+    var itemExists = await find(post.linkyoutube);
     if (itemExists.isEmpty) {
-      return await bancoDeDados.insert(_posttable, _toMap(postagem));
+      return await dataBaselocal.insert(_postsTable, _toMap(post));
     } else {
-      return await bancoDeDados.update(_posttable, _toMap(postagem),
-          where: '$_linkyoutube = ?', whereArgs: [postagem.linkyoutube]);
+      return await dataBaselocal.update(_postsTable, _toMap(post),
+          where: '$_linkyoutube = ?', whereArgs: [post.linkyoutube]);
     }
   }
 
-  Future<int> pegarTamanhoDB() async {
-    final Database bancoDeDados = await getDatabase();
+  Future<int> getLengthDB() async {
+    final Database dataBaselocal = await getDatabase();
     final List<Map<String, dynamic>> result =
-        await bancoDeDados.query(_posttable);
+        await dataBaselocal.query(_postsTable);
     if (result.isEmpty) {
-      const int varParaID = 1;
-      return varParaID;
+      const int varForID = 1;
+      return varForID;
     } else {
       int id = result.length;
-      final varParaID = id++;
-      return varParaID;
+      final varForID = id++;
+      return varForID;
     }
   }
 
   Future<List<Post>> findAll() async {
-    final Database bancoDeDados = await getDatabase();
+    final Database dataBaselocal = await getDatabase();
     final List<Map<String, dynamic>> result =
-        await bancoDeDados.query(_posttable);
+        await dataBaselocal.query(_postsTable);
     return toList(result);
   }
 
-  Future<List<Post>> find(String categoriaBuscada) async {
-    final Database bancoDeDados = await getDatabase();
-    final List<Map<String, dynamic>> result = await bancoDeDados.query(
-        _posttable,
-        where: '$_nomeCategoria = ?',
-        whereArgs: [categoriaBuscada]);
+  Future<List<Post>> find(String selectedCategory) async {
+    final Database dataBaselocal = await getDatabase();
+    final List<Map<String, dynamic>> result = await dataBaselocal.query(
+        _postsTable,
+        where: '$_nameCategory = ?',
+        whereArgs: [selectedCategory]);
     return toList(result);
   }
 
-  delete(String linkdaPostagem) async {
-    final Database bancoDeDados = await getDatabase();
-    return bancoDeDados.delete(_posttable,
-        where: '$_linkyoutube = ?', whereArgs: [linkdaPostagem]);
+  delete(String linkpost) async {
+    final Database dataBaselocal = await getDatabase();
+    return dataBaselocal.delete(_postsTable,
+        where: '$_linkyoutube = ?', whereArgs: [linkpost]);
   }
 
-  List<Post> toList(List<Map<String, dynamic>> listaDePostagens) {
-    final List<Post> postagens = [];
-    for (Map<String, dynamic> linha in listaDePostagens) {
-      final Post postagem = Post(
-        linha[_id],
-        linha[_linkyoutube],
-        linha[_nomeCategoria],
-        linha[_corCategoria],
+  List<Post> toList(List<Map<String, dynamic>> postsList) {
+    final List<Post> posts = [];
+    for (Map<String, dynamic> row in postsList) {
+      final Post post = Post(
+        row[_id],
+        row[_linkyoutube],
+        row[_nameCategory],
+        row[_colorCategory],
       );
-      postagens.add(postagem);
+      posts.add(post);
     }
-    return postagens;
+    return posts;
   }
 
-  Map<String, dynamic> _toMap(Post postagem) {
-    final Map<String, dynamic> mapaPostagem = {};
-    mapaPostagem[_linkyoutube] = postagem.linkyoutube;
-    mapaPostagem[_nomeCategoria] = postagem.nomeCategoria;
-    mapaPostagem[_corCategoria] = postagem.corCategoria;
-    return mapaPostagem;
+  Map<String, dynamic> _toMap(Post post) {
+    final Map<String, dynamic> postMap = {};
+    postMap[_linkyoutube] = post.linkyoutube;
+    postMap[_nameCategory] = post.nameCategory;
+    postMap[_colorCategory] = post.colorCategory;
+    return postMap;
   }
 }

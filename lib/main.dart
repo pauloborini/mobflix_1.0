@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobflix/screens/dashboard.dart';
-import 'package:mobflix/screens/form_post.dart';
+import 'package:mobflix/screens/initial_screen.dart';
+import 'package:mobflix/screens/form_post_screen.dart';
 
 
 void main() {
@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         brightness: Brightness.dark,
       ),
-      initialRoute: "/dashboard",
+      initialRoute: "/initial_screen",
       routes: {
-        "/dashboard": (context) => const Dashboard(),
-        "/post": (context) => const FormPost(),
+        "/initial_screen": (context) => const InitialScreen(),
+        "/post_screen": (context) => const FormPostScreen(),
       },
     );
   }

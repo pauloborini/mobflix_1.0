@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobflix/components/post.dart';
+import 'package:mobflix/screens/edit_screen.dart';
 import 'package:mobflix/screens/initial_screen.dart';
 import 'package:mobflix/screens/form_post_screen.dart';
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/initial_screen",
       routes: {
-        "/initial_screen": (context) => const InitialScreen(),
+        "/initial_screen": (context) => InitialScreen(),
         "/post_screen": (context) => const FormPostScreen(),
       },
     );

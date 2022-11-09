@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mobflix/screens/edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Post extends StatefulWidget {
-  final int id;
+class Post extends StatefulWidget{
   final String linkyoutube;
   final String nameCategory;
   final int colorCategory;
 
-  const Post(this.id, this.linkyoutube, this.nameCategory, this.colorCategory,
+  Post(this.linkyoutube, this.nameCategory, this.colorCategory,
       {super.key});
 
   @override
@@ -49,7 +49,8 @@ class _PostState extends State<Post> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,17 +83,22 @@ class _PostState extends State<Post> {
               ),
               Positioned.fill(
                   child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    if (widget.linkyoutube.length == 11) {
-                      _launchURL2();
-                    }
-                    _launchURL();
-                  },
-                ),
-              ))
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onLongPress: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) =>
+                                EditPostScreen()));
+                      },
+                      onTap: () {
+                        if (widget.linkyoutube.length == 11) {
+                          _launchURL2();
+                        }
+                        _launchURL();
+                      },
+                    ),
+                  ))
             ]),
           ),
         ],

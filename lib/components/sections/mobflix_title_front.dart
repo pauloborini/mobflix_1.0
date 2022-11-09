@@ -7,10 +7,10 @@ class MobflixTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 86,
+      height: 76,
       color: const Color(0xFF19191A),
       child: const Padding(
-        padding: EdgeInsets.fromLTRB(0, 40, 0, 8),
+        padding: EdgeInsets.fromLTRB(0, 30, 0, 8),
         child: Center(
           child: Text(
             'MOBFLIX',

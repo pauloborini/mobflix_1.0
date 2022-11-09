@@ -70,7 +70,7 @@ class _FindScreenState extends State<FindScreen> {
               width: double.maxFinite,
               height: double.maxFinite,
               child: FutureBuilder<List<Post>>(
-                future: PostDao().find(widget.selectedCategory),
+                future: PostDao().findCategory(widget.selectedCategory),
                 builder: (context, snapshot) {
                   List<Post>? items = snapshot.data?.reversed.toList();
                   switch (snapshot.connectionState) {

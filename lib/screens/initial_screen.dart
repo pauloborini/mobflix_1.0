@@ -1,17 +1,25 @@
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobflix/components/sections/category_slider_front.dart';
 import 'package:mobflix/components/sections/banner_highlight_front.dart';
-import 'package:mobflix/components/sections/mobflix_title.dart';
+import 'package:mobflix/components/sections/mobflix_title_front.dart';
 import '../components/sections/post_list_front.dart';
 
 class InitialScreen extends StatefulWidget {
-  const InitialScreen({super.key});
+  InitialScreen({super.key});
 
   @override
   State<InitialScreen> createState() => _InitialScreenState();
 }
 
 class _InitialScreenState extends State<InitialScreen> {
+  final Color stanColor = const Color(0xFF222223);
+  final Color appBarFront = const Color(0xFF19191A);
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +28,14 @@ class _InitialScreenState extends State<InitialScreen> {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent
+              ),
                 forceElevated: innerBoxIsScrolled,
-                expandedHeight: 0,
-                toolbarHeight: 290,
+                toolbarHeight: 280,
                 elevation: 0,
-                backgroundColor: const Color(0xFF19191A),
+                backgroundColor: appBarFront,
                 titleSpacing: 0,
                 title: Column(children: const [
                   MobflixTitle(),
@@ -33,7 +44,9 @@ class _InitialScreenState extends State<InitialScreen> {
                 ])),
           ];
         },
-        body: const PostListFront(),
+        body: Container(
+            color: stanColor,
+            child: PostListFront()),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

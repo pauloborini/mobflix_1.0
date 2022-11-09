@@ -4,13 +4,11 @@ import 'package:sqflite/sqflite.dart';
 
 class PostDao {
   static const String tableSql = 'CREATE TABLE $_postsTable('
-      '$_id INTEGER PRIMARY KEY, '
       '$_linkyoutube TEXT, '
       '$_nameCategory TEXT, '
       '$_colorCategory INTEGER)';
 
   static const String _postsTable = 'postsTable';
-  static const String _id = 'id';
   static const String _linkyoutube = 'linkyoutube';
   static const String _nameCategory = 'nameCategory';
   static const String _colorCategory = 'colorCategory';
@@ -26,19 +24,6 @@ class PostDao {
     }
   }
 
-  Future<int> getLengthDB() async {
-    final Database dataBaselocal = await getDatabase();
-    final List<Map<String, dynamic>> result =
-        await dataBaselocal.query(_postsTable);
-    if (result.isEmpty) {
-      const int varForID = 1;
-      return varForID;
-    } else {
-      int id = result.length;
-      final varForID = id++;
-      return varForID;
-    }
-  }
 
   Future<List<Post>> findAll() async {
     final Database dataBaselocal = await getDatabase();
@@ -47,12 +32,21 @@ class PostDao {
     return toList(result);
   }
 
-  Future<List<Post>> find(String selectedCategory) async {
+  Future<List<Post>> findCategory(String selectedCategory) async {
     final Database dataBaselocal = await getDatabase();
     final List<Map<String, dynamic>> result = await dataBaselocal.query(
         _postsTable,
         where: '$_nameCategory = ?',
         whereArgs: [selectedCategory]);
+    return toList(result);
+  }
+
+  Future<List<Post>> find(String linkyoutube) async {
+    final Database dataBaselocal = await getDatabase();
+    final List<Map<String, dynamic>> result = await dataBaselocal.query(
+        _postsTable,
+        where: '$_linkyoutube = ?',
+        whereArgs: [linkyoutube]);
     return toList(result);
   }
 
@@ -66,7 +60,6 @@ class PostDao {
     final List<Post> posts = [];
     for (Map<String, dynamic> row in postsList) {
       final Post post = Post(
-        row[_id],
         row[_linkyoutube],
         row[_nameCategory],
         row[_colorCategory],

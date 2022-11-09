@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobflix/data/post_dao.dart';
-import '../components/post.dart';
 
-class FormPostScreen extends StatefulWidget {
-  const FormPostScreen({
-    Key? key,
-  }) : super(key: key);
+class EditPostScreen extends StatefulWidget {
+  // final Post post;
+
+  const EditPostScreen({super.key});
 
   @override
-  State<FormPostScreen> createState() => _FormPostScreen();
+  State<EditPostScreen> createState() => _EditPostScreen();
 }
 
-class _FormPostScreen extends State<FormPostScreen> {
+class _EditPostScreen extends State<EditPostScreen> {
   final Color stanColor = const Color(0xFF222223);
   final _formKey = GlobalKey<FormState>();
   TextEditingController urlController = TextEditingController();
@@ -48,26 +46,41 @@ class _FormPostScreen extends State<FormPostScreen> {
     return false;
   }
 
+  // getCategory() {
+  //   Iterable category = categoryMap.keys
+  //       .toList()
+  //       .where((element) => element == widget.post.nameCategory);
+  //
+  //   return categoryController;
+  // }
+
+  final Map<String, int> categoryMap = {
+    'Ação': -14049492,
+    'Terror': -2350542,
+    'Suspense': -16777216,
+    'Aventura': -13251864,
+    'Ficção Científica': -14049492,
+    'Animação': -13251864,
+    'Drama': -14583081,
+    'Comédia': -13251864,
+    'Médicas': -14049492,
+    'Romance': -2350542,
+    'Fantasia': -14583081,
+    'Espionagem': -3695864,
+    'Musical': -16777216,
+    'Policial': -3695864,
+    'Guerra': -13251864,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    // urlController.text = widget.linkyoutube;
+    // getCategory();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, int> categoryMap = {
-      'Ação': -14049492,
-      'Terror': -2350542,
-      'Suspense': -16777216,
-      'Aventura': -13251864,
-      'Ficção Científica': -14049492,
-      'Animação': -13251864,
-      'Drama': -14583081,
-      'Comédia': -13251864,
-      'Médicas': -14049492,
-      'Romance': -2350542,
-      'Fantasia': -14583081,
-      'Espionagem': -3695864,
-      'Musical': -16777216,
-      'Policial': -3695864,
-      'Guerra': -13251864,
-    };
-
     final List<String> keysList = categoryMap.keys.toList();
     final List<int> valuesList = categoryMap.values.toList();
 
@@ -87,7 +100,7 @@ class _FormPostScreen extends State<FormPostScreen> {
               },
               child: const Icon(Icons.arrow_back_ios_new)),
           title: const Text(
-            'Cadastrar vídeo',
+            'Edite o vídeo',
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
           ),
         ),
@@ -113,10 +126,10 @@ class _FormPostScreen extends State<FormPostScreen> {
                   ),
                   TextFormField(
                     validator: (String? value) {
-                      if (valueValidator(value)) {
+                      if (valueValidator(value!)) {
                         return 'Insira a URL corretamente';
                       }
-                      return null;
+                      return value;
                     },
                     controller: urlController,
                     onChanged: (text) {
@@ -205,7 +218,7 @@ class _FormPostScreen extends State<FormPostScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
                     child: Container(
                       height: 180,
                       width: 330,
@@ -234,9 +247,6 @@ class _FormPostScreen extends State<FormPostScreen> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-
-                          await PostDao().save(Post(urlController.text,
-                              categoryController, colorController));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Post criado'),
@@ -247,9 +257,36 @@ class _FormPostScreen extends State<FormPostScreen> {
                         }
                       },
                       child: const Text(
-                        'Cadastrar',
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        'Atualizar',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // PostDao().delete(
+                          //     posts.linkyoutube);
+                          // ScaffoldMessenger.of(context)
+                          //     .showSnackBar(SnackBar(
+                          //     content: Text(
+                          //         '${posts.linkyoutube} apagada')));
+
+                          Navigator.of(context)
+                              .pushReplacementNamed("/initial_screen");
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
+                        child: const Text(
+                          'Remover',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),

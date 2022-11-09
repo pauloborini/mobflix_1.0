@@ -23,7 +23,7 @@ class CategoryButtonFront extends StatelessWidget {
               ),
               backgroundColor: colorCategory),
           onPressed: () {
-            PostDao().find(searchCategory);
+            PostDao().findCategory(searchCategory);
             Navigator.of(context).push(MaterialPageRoute(builder: (contextNew) {
               return FindScreen(
                   selectedCategory: searchCategory,

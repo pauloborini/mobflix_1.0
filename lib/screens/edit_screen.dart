@@ -210,7 +210,7 @@ class _EditPostScreen extends State<EditPostScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 20),
                     child: Container(
                       height: 180,
                       width: 330,
@@ -258,30 +258,6 @@ class _EditPostScreen extends State<EditPostScreen> {
                         'Atualizar',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          PostDao().delete(widget.linkyoutube);
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('${widget.linkyoutube} apagada')));
-
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              '/initial_screen', ModalRoute.withName('/'));
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red),
-                        child: const Text(
-                          'Remover',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
                       ),
                     ),
                   ),

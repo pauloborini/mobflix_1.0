@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream
 import 'package:mobflix/data/post_dao.dart';
-=======
-import '../../data/post_dao.dart';
->>>>>>> Stashed changes
 import '../../screens/edit_screen.dart';
 import '../circular_progress.dart';
 import '../post.dart';

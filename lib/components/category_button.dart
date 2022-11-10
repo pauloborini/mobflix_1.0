@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data/post_dao.dart';
 import '../screens/find_screen.dart';
 

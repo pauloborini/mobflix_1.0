@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 import 'screens/form_post_screen.dart';
 import 'screens/initial_screen.dart';
 

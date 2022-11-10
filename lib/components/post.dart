@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobflix/screens/edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Post extends StatefulWidget {

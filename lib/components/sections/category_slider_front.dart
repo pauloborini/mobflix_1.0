@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobflix/components/category_button.dart';
+import '../category_button.dart';
 
 class RowCategoryFront extends StatelessWidget {
   const RowCategoryFront({Key? key}) : super(key: key);

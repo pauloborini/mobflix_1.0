@@ -1,9 +1,12 @@
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobflix/components/sections/category_slider_front.dart';
-import 'package:mobflix/components/sections/banner_highlight_front.dart';
-import 'package:mobflix/components/sections/mobflix_title_front.dart';
+import '../components/sections/banner_highlight_front.dart';
+import '../components/sections/category_slider_front.dart';
+import '../components/sections/mobflix_title_front.dart';
 import '../components/sections/post_list_front.dart';
 
 class InitialScreen extends StatefulWidget {

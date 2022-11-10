@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobflix/data/post_dao.dart';
-import 'package:mobflix/screens/find_screen.dart';
+
+import '../data/post_dao.dart';
+import '../screens/find_screen.dart';
 
 class CategoryButtonFront extends StatelessWidget {
   final String nameCategory;

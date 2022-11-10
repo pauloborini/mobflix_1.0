@@ -415,6 +415,13 @@
             </list>
           </value>
         </entry>
+        <entry key="validatorless">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/validatorless-1.2.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="vector_math">
           <value>
             <list>
@@ -494,6 +501,7 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_platform_interface-2.1.1/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.13/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.1/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/validatorless-1.2.3/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.2/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/win32-3.0.1/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+2/lib" />

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobflix/data/post_dao.dart';
+import 'package:validatorless/validatorless.dart';
 import '../components/post.dart';
 
 class FormPostScreen extends StatefulWidget {
@@ -15,12 +16,18 @@ class FormPostScreen extends StatefulWidget {
 class _FormPostScreen extends State<FormPostScreen> {
   final Color stanColor = const Color(0xFF222223);
   final _formKey = GlobalKey<FormState>();
-  TextEditingController urlController = TextEditingController();
-  String categoryController = '';
-  int colorController = 0;
+  final _urlController = TextEditingController();
+  String _categoryController = '';
+  int _colorController = 0;
   final String noPhoto = 'assets/images/noLink.png';
   int _indexController = 0;
   bool opacity = false;
+
+  @override
+  void dispose() {
+    _urlController.dispose();
+    super.dispose();
+  }
 
   String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
     if (!url.contains("http") && (url.length == 11)) return url;
@@ -39,14 +46,7 @@ class _FormPostScreen extends State<FormPostScreen> {
     return null;
   }
 
-  get videoId => convertUrlToId(urlController.text);
-
-  bool valueValidator(String? value) {
-    if (value != null && value.isEmpty) {
-      return true;
-    }
-    return false;
-  }
+  get videoId => convertUrlToId(_urlController.text);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,6 @@ class _FormPostScreen extends State<FormPostScreen> {
       'Policial': -3695864,
       'Guerra': -13251864,
     };
-
     final List<String> keysList = categoryMap.keys.toList();
     final List<int> valuesList = categoryMap.values.toList();
 
@@ -112,13 +111,8 @@ class _FormPostScreen extends State<FormPostScreen> {
                     ),
                   ),
                   TextFormField(
-                    validator: (String? value) {
-                      if (valueValidator(value)) {
-                        return 'Insira a URL corretamente';
-                      }
-                      return null;
-                    },
-                    controller: urlController,
+                    validator: Validatorless.required('Preencha com uma URL'),
+                    controller: _urlController,
                     onChanged: (text) {
                       setState(() {});
                     },
@@ -149,6 +143,8 @@ class _FormPostScreen extends State<FormPostScreen> {
                     ),
                   ), //
                   DropdownButtonFormField(
+                      validator:
+                          Validatorless.required('Selecione uma categoria'),
                       items: categoryMap.keys
                           .map<DropdownMenuItem<String>>((String key) {
                         return DropdownMenuItem<String>(
@@ -160,8 +156,8 @@ class _FormPostScreen extends State<FormPostScreen> {
                         setState(() {
                           opacity = true;
                           _indexController = (keysList.indexOf(value!));
-                          categoryController = keysList[_indexController];
-                          colorController = valuesList[_indexController];
+                          _categoryController = keysList[_indexController];
+                          _colorController = valuesList[_indexController];
                         });
                       },
                       dropdownColor: Colors.black,
@@ -198,8 +194,8 @@ class _FormPostScreen extends State<FormPostScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            backgroundColor: Color(colorController)),
-                        child: Text(categoryController),
+                            backgroundColor: Color(_colorController)),
+                        child: Text(_categoryController),
                         onPressed: () {},
                       ),
                     ),
@@ -233,10 +229,13 @@ class _FormPostScreen extends State<FormPostScreen> {
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-
-                          await PostDao().save(Post(urlController.text,
-                              categoryController, colorController));
+                        var formValid =
+                            _formKey.currentState?.validate() ?? false;
+                        if (formValid) {
+                          await PostDao().save(Post(
+                              linkyoutube: _urlController.text,
+                              nameCategory: _categoryController,
+                              colorCategory: _colorController));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Post criado'),
@@ -248,8 +247,8 @@ class _FormPostScreen extends State<FormPostScreen> {
                       },
                       child: const Text(
                         'Cadastrar',
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobflix/components/post.dart';
-import 'package:mobflix/screens/edit_screen.dart';
-import 'package:mobflix/screens/initial_screen.dart';
-import 'package:mobflix/screens/form_post_screen.dart';
+import 'package:flutter/services.dart';
 
+import 'screens/form_post_screen.dart';
+import 'screens/initial_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Mobflix',
       theme: ThemeData(

@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mobflix/screens/edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Post extends StatefulWidget{
+class Post extends StatefulWidget {
+  late int id;
   final String linkyoutube;
   final String nameCategory;
   final int colorCategory;
 
-  Post(this.linkyoutube, this.nameCategory, this.colorCategory,
-      {super.key});
+  Post(
+      {super.key,
+      required this.linkyoutube,
+      required this.nameCategory,
+      required this.colorCategory});
 
   @override
   State<Post> createState() => _PostState();
@@ -83,22 +87,17 @@ class _PostState extends State<Post> {
               ),
               Positioned.fill(
                   child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(8),
-                      onLongPress: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) =>
-                                EditPostScreen()));
-                      },
-                      onTap: () {
-                        if (widget.linkyoutube.length == 11) {
-                          _launchURL2();
-                        }
-                        _launchURL();
-                      },
-                    ),
-                  ))
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () {
+                    if (widget.linkyoutube.length == 11) {
+                      _launchURL2();
+                    }
+                    _launchURL();
+                  },
+                ),
+              ))
             ]),
           ),
         ],

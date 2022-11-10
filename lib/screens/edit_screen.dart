@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobflix/data/post_dao.dart';
+import 'package:validatorless/validatorless.dart';
+import '../components/post.dart';
 
 class EditPostScreen extends StatefulWidget {
-  // final Post post;
+  String linkyoutube;
+  String nameCategory;
+  int colorCategory;
 
-  const EditPostScreen({super.key});
+  EditPostScreen(this.linkyoutube, this.nameCategory, this.colorCategory,
+      {super.key});
 
   @override
   State<EditPostScreen> createState() => _EditPostScreen();
@@ -12,10 +18,11 @@ class EditPostScreen extends StatefulWidget {
 
 class _EditPostScreen extends State<EditPostScreen> {
   final Color stanColor = const Color(0xFF222223);
+  final Color fillColorForm = const Color(0xFF275EA3);
   final _formKey = GlobalKey<FormState>();
-  TextEditingController urlController = TextEditingController();
-  String categoryController = '';
-  int colorController = 0;
+  final _urlController = TextEditingController();
+  String _categoryController = '';
+  int _colorController = 0;
   final String noPhoto = 'assets/images/noLink.png';
   int _indexController = 0;
   bool opacity = false;
@@ -37,50 +44,39 @@ class _EditPostScreen extends State<EditPostScreen> {
     return null;
   }
 
-  get videoId => convertUrlToId(urlController.text);
-
-  bool valueValidator(String? value) {
-    if (value != null && value.isEmpty) {
-      return true;
-    }
-    return false;
-  }
-
-  // getCategory() {
-  //   Iterable category = categoryMap.keys
-  //       .toList()
-  //       .where((element) => element == widget.post.nameCategory);
-  //
-  //   return categoryController;
-  // }
-
-  final Map<String, int> categoryMap = {
-    'Ação': -14049492,
-    'Terror': -2350542,
-    'Suspense': -16777216,
-    'Aventura': -13251864,
-    'Ficção Científica': -14049492,
-    'Animação': -13251864,
-    'Drama': -14583081,
-    'Comédia': -13251864,
-    'Médicas': -14049492,
-    'Romance': -2350542,
-    'Fantasia': -14583081,
-    'Espionagem': -3695864,
-    'Musical': -16777216,
-    'Policial': -3695864,
-    'Guerra': -13251864,
-  };
+  get videoId => convertUrlToId(_urlController.text);
 
   @override
   void initState() {
     super.initState();
-    // urlController.text = widget.linkyoutube;
-    // getCategory();
+    _urlController.text = widget.linkyoutube;
+  }
+
+  @override
+  void dispose() {
+    _urlController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, int> categoryMap = {
+      'Ação': -14049492,
+      'Terror': -2350542,
+      'Suspense': -16777216,
+      'Aventura': -13251864,
+      'Ficção Científica': -14049492,
+      'Animação': -13251864,
+      'Drama': -14583081,
+      'Comédia': -13251864,
+      'Médicas': -14049492,
+      'Romance': -2350542,
+      'Fantasia': -14583081,
+      'Espionagem': -3695864,
+      'Musical': -16777216,
+      'Policial': -3695864,
+      'Guerra': -13251864,
+    };
     final List<String> keysList = categoryMap.keys.toList();
     final List<int> valuesList = categoryMap.values.toList();
 
@@ -96,7 +92,8 @@ class _EditPostScreen extends State<EditPostScreen> {
           ),
           leading: InkWell(
               onTap: () {
-                Navigator.of(context).pushReplacementNamed("/initial_screen");
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/initial_screen', ModalRoute.withName('/'));
               },
               child: const Icon(Icons.arrow_back_ios_new)),
           title: const Text(
@@ -107,7 +104,7 @@ class _EditPostScreen extends State<EditPostScreen> {
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-            color: const Color(0xFF222223),
+            color: stanColor,
             width: double.infinity,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -125,19 +122,14 @@ class _EditPostScreen extends State<EditPostScreen> {
                     ),
                   ),
                   TextFormField(
-                    validator: (String? value) {
-                      if (valueValidator(value!)) {
-                        return 'Insira a URL corretamente';
-                      }
-                      return value;
-                    },
-                    controller: urlController,
+                    validator: Validatorless.required('Preencha com uma URL'),
+                    controller: _urlController,
                     onChanged: (text) {
                       setState(() {});
                     },
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
-                      fillColor: const Color(0xFF275EA3),
+                      fillColor: fillColorForm,
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(8)),
@@ -154,14 +146,14 @@ class _EditPostScreen extends State<EditPostScreen> {
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 4),
                     child: Text(
                       'Categoria:',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
-                  ), //
+                  ),
+                  //
                   DropdownButtonFormField(
+                      validator:
+                          Validatorless.required('Selecione uma categoria'),
                       items: categoryMap.keys
                           .map<DropdownMenuItem<String>>((String key) {
                         return DropdownMenuItem<String>(
@@ -173,13 +165,13 @@ class _EditPostScreen extends State<EditPostScreen> {
                         setState(() {
                           opacity = true;
                           _indexController = (keysList.indexOf(value!));
-                          categoryController = keysList[_indexController];
-                          colorController = valuesList[_indexController];
+                          _categoryController = keysList[_indexController];
+                          _colorController = valuesList[_indexController];
                         });
                       },
                       dropdownColor: Colors.black,
                       decoration: InputDecoration(
-                        fillColor: const Color(0xFF275EA3),
+                        fillColor: fillColorForm,
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(8)),
@@ -211,8 +203,8 @@ class _EditPostScreen extends State<EditPostScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            backgroundColor: Color(colorController)),
-                        child: Text(categoryController),
+                            backgroundColor: Color(_colorController)),
+                        child: Text(_categoryController),
                         onPressed: () {},
                       ),
                     ),
@@ -246,14 +238,20 @@ class _EditPostScreen extends State<EditPostScreen> {
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
+                        var formValid =
+                            _formKey.currentState?.validate() ?? false;
+                        if (formValid) {
+                          await PostDao().update(Post(
+                              linkyoutube: _urlController.text,
+                              nameCategory: _categoryController,
+                              colorCategory: _colorController));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Post criado'),
+                              content: Text('Post atualizado'),
                             ),
                           );
-                          Navigator.of(context)
-                              .pushReplacementNamed("/initial_screen");
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              '/initial_screen', ModalRoute.withName('/'));
                         }
                       },
                       child: const Text(
@@ -270,15 +268,12 @@ class _EditPostScreen extends State<EditPostScreen> {
                       height: 48,
                       child: ElevatedButton(
                         onPressed: () async {
-                          // PostDao().delete(
-                          //     posts.linkyoutube);
-                          // ScaffoldMessenger.of(context)
-                          //     .showSnackBar(SnackBar(
-                          //     content: Text(
-                          //         '${posts.linkyoutube} apagada')));
+                          PostDao().delete(widget.linkyoutube);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('${widget.linkyoutube} apagada')));
 
-                          Navigator.of(context)
-                              .pushReplacementNamed("/initial_screen");
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              '/initial_screen', ModalRoute.withName('/'));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red),

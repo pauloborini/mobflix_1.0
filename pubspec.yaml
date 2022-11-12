@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite: ^2.0.3+1
+  path: ^1.8.2
   flutter_image_slideshow: ^0.1.4
   validatorless: ^1.2.3
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobflix/data/post_dao.dart';
-import '../../screens/edit_screen.dart';
-import '../circular_progress.dart';
-import '../post.dart';
+import '../../../screens/edit_post_screen.dart';
+import '../../utilities/circular_progress.dart';
+import '../../post.dart';
 
 class PostListFront extends StatefulWidget {
   const PostListFront({Key? key}) : super(key: key);
@@ -31,16 +31,12 @@ class _PostListFrontState extends State<PostListFront> {
             if (snapshot.hasData && items != null) {
               if (items.isNotEmpty) {
                 return ListView.builder(
-                  reverse: false,
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final Post posts = items[index];
+                    final Post post = items[index];
                     return Dismissible(
-                      key: ValueKey<Post>(posts),
+                      key: ValueKey<Post>(post),
                       direction: DismissDirection.horizontal,
-                      onDismissed: (direction) {
-                        setState(() {});
-                      },
                       confirmDismiss: (DismissDirection direction) async {
                         if (direction == DismissDirection.endToStart) {
                           return await showDialog(
@@ -49,23 +45,30 @@ class _PostListFrontState extends State<PostListFront> {
                               return AlertDialog(
                                 title: const Text("Confirmação"),
                                 content:
-                                    const Text("Você quer DELETAR a postagem?"),
+                                    const Text("Você quer deletar a postagem?"),
                                 actions: [
-                                  ElevatedButton(
+                                  TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop(true);
-                                        PostDao().delete(posts.linkyoutube);
+                                        PostDao().delete(post.linkyoutube);
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    '${posts.linkyoutube} apagada')));
+                                            .showSnackBar(const SnackBar(
+                                                content: Text('Post apagado')));
                                       },
-                                      child: const Text("Deletar")),
-                                  ElevatedButton(
+                                      child: const Text(
+                                        "DELETAR",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.red),
+                                      )),
+                                  TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop(false);
                                     },
-                                    child: const Text("Cancelar"),
+                                    child: const Text(
+                                      "Cancelar",
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               );
@@ -78,24 +81,33 @@ class _PostListFrontState extends State<PostListFront> {
                               return AlertDialog(
                                 title: const Text("Confirmação"),
                                 content:
-                                    const Text("Você quer EDITAR a postagem?"),
+                                    const Text("Você quer editar a postagem?"),
                                 actions: [
-                                  ElevatedButton(
+                                  TextButton(
                                       onPressed: () {
-                                        Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditPostScreen(
-                                                        posts.linkyoutube,
-                                                        posts.nameCategory,
-                                                        posts.colorCategory)));
+                                        Navigator.of(context)
+                                            .pushReplacement(MaterialPageRoute(
+                                          builder: (context) => EditPostScreen(
+                                              post.id!,
+                                              post.linkyoutube,
+                                              post.nameCategory,
+                                              post.colorCategory),
+                                        ));
                                       },
-                                      child: const Text("Editar")),
-                                  ElevatedButton(
+                                      child: const Text(
+                                        "EDITAR",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.green),
+                                      )),
+                                  TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop(false);
                                     },
-                                    child: const Text("Cancelar"),
+                                    child: const Text(
+                                      "Cancelar",
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               );
@@ -131,7 +143,7 @@ class _PostListFrontState extends State<PostListFront> {
                           ),
                         ),
                       ),
-                      child: Container(child: posts),
+                      child: Container(child: post),
                     );
                   },
                 );

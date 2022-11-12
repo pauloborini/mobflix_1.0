@@ -1,0 +1,17 @@
+const categoryData = [
+  {"categoria": "Ação", "colorInt": -14049492},
+  {"categoria": "Terror", "colorInt": -2350542},
+  {"categoria": "Suspense", "colorInt": -16777216},
+  {"categoria": "Aventura", "colorInt": -13251864},
+  {"categoria": "Ficção Científica", "colorInt": -14049492},
+  {"categoria": "Animação", "colorInt": -13251864},
+  {"categoria": "Drama", "colorInt": -14583081},
+  {"categoria": "Comédia", "colorInt": -13251864},
+  {"categoria": "Médicas", "colorInt": -14049492},
+  {"categoria": "Romance", "colorInt": -2350542},
+  {"categoria": "Fantasia", "colorInt": -14583081},
+  {"categoria": "Espionagem", "colorInt": -3695864},
+  {"categoria": "Musical", "colorInt": -16777216},
+  {"categoria": "Policial", "colorInt": -3695864},
+  {"categoria": "Guerra", "colorInt": -13251864},
+];

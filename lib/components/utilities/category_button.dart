@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../data/post_dao.dart';
-import '../screens/find_screen.dart';
+import '../../data/post_dao.dart';
+import '../../screens/filter_screen.dart';
 
 class CategoryButtonFront extends StatelessWidget {
   final String nameCategory;
@@ -15,9 +15,11 @@ class CategoryButtonFront extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(6, 1, 2, 6),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+             // padding: EdgeInsets.fromLTRB(0, 1, 0, 1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -25,7 +27,7 @@ class CategoryButtonFront extends StatelessWidget {
           onPressed: () {
             PostDao().findCategory(searchCategory);
             Navigator.of(context).push(MaterialPageRoute(builder: (contextNew) {
-              return FindScreen(
+              return FilterScreen(
                   selectedCategory: searchCategory,
                   nameCategory: nameCategory,
                   colorCategory: colorCategory);

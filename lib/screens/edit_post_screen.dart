@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:validatorless/validatorless.dart';
+import '../components/base_app_bar.dart';
 import '../components/post.dart';
+import '../components/utilities/colors_and_vars.dart';
+import '../components/utilities/functions.dart';
 import '../data/post_dao.dart';
 
 class EditPostScreen extends StatefulWidget {
+  int? id;
   String linkyoutube;
   String nameCategory;
   int colorCategory;
 
-  EditPostScreen(this.linkyoutube, this.nameCategory, this.colorCategory,
+  EditPostScreen(
+      this.id, this.linkyoutube, this.nameCategory, this.colorCategory,
       {super.key});
 
   @override
@@ -17,32 +21,12 @@ class EditPostScreen extends StatefulWidget {
 }
 
 class _EditPostScreen extends State<EditPostScreen> {
-  final Color stanColor = const Color(0xFF222223);
-  final Color fillColorForm = const Color(0xFF275EA3);
   final _formKey = GlobalKey<FormState>();
   final _urlController = TextEditingController();
   String _categoryController = '';
   int _colorController = 0;
-  final String noPhoto = 'assets/images/noLink.png';
   int _indexController = 0;
   bool opacity = false;
-
-  String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
-    if (!url.contains("http") && (url.length == 11)) return url;
-    if (trimWhitespaces) url = url.trim();
-
-    for (var exp in [
-      RegExp(
-          r"^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
-      RegExp(
-          r"^https:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/embed\/([_\-a-zA-Z0-9]{11}).*$"),
-      RegExp(r"^https:\/\/youtu\.be\/([_\-a-zA-Z0-9]{11}).*$")
-    ]) {
-      Match? match = exp.firstMatch(url);
-      if (match != null && match.groupCount >= 1) return match.group(1);
-    }
-    return null;
-  }
 
   get videoId => convertUrlToId(_urlController.text);
 
@@ -58,49 +42,16 @@ class _EditPostScreen extends State<EditPostScreen> {
     super.dispose();
   }
 
+  final List<String> keysList = categoryMap.keys.toList();
+  final List<int> valuesList = categoryMap.values.toList();
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, int> categoryMap = {
-      'Ação': -14049492,
-      'Terror': -2350542,
-      'Suspense': -16777216,
-      'Aventura': -13251864,
-      'Ficção Científica': -14049492,
-      'Animação': -13251864,
-      'Drama': -14583081,
-      'Comédia': -13251864,
-      'Médicas': -14049492,
-      'Romance': -2350542,
-      'Fantasia': -14583081,
-      'Espionagem': -3695864,
-      'Musical': -16777216,
-      'Policial': -3695864,
-      'Guerra': -13251864,
-    };
-    final List<String> keysList = categoryMap.keys.toList();
-    final List<int> valuesList = categoryMap.values.toList();
-
     return Form(
       key: _formKey,
       child: Scaffold(
         backgroundColor: stanColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: stanColor,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-          ),
-          leading: InkWell(
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/initial_screen', ModalRoute.withName('/'));
-              },
-              child: const Icon(Icons.arrow_back_ios_new)),
-          title: const Text(
-            'Edite o vídeo',
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-          ),
-        ),
+        appBar: BaseAppBar(title: 'Editar vídeo', appBar: AppBar()),
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -234,7 +185,7 @@ class _EditPostScreen extends State<EditPostScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: double.maxFinite,
+                    width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -242,6 +193,7 @@ class _EditPostScreen extends State<EditPostScreen> {
                             _formKey.currentState?.validate() ?? false;
                         if (formValid) {
                           await PostDao().update(Post(
+                              id: widget.id,
                               linkyoutube: _urlController.text,
                               nameCategory: _categoryController,
                               colorCategory: _colorController));
@@ -254,6 +206,8 @@ class _EditPostScreen extends State<EditPostScreen> {
                               '/initial_screen', ModalRoute.withName('/'));
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor),
                       child: const Text(
                         'Atualizar',
                         style: TextStyle(

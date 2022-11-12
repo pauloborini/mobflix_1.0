@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'utilities/colors_and_vars.dart';
+import 'utilities/functions.dart';
+
 class Post extends StatefulWidget {
-  late int id;
+  final int? id;
   final String linkyoutube;
   final String nameCategory;
   final int colorCategory;
 
   Post(
       {super.key,
+      this.id,
       required this.linkyoutube,
       required this.nameCategory,
       required this.colorCategory});
@@ -18,23 +22,6 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
-    if (!url.contains("http") && (url.length == 11)) return url;
-    if (trimWhitespaces) url = url.trim();
-
-    for (var exp in [
-      RegExp(
-          r"^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
-      RegExp(
-          r"^https:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/embed\/([_\-a-zA-Z0-9]{11}).*$"),
-      RegExp(r"^https:\/\/youtu\.be\/([_\-a-zA-Z0-9]{11}).*$")
-    ]) {
-      Match? match = exp.firstMatch(url);
-      if (match != null && match.groupCount >= 1) return match.group(1);
-    }
-    return null;
-  }
-
   get videoId => convertUrlToId(widget.linkyoutube);
 
   Future<void> _launchURL2() async {
@@ -53,22 +40,24 @@ class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: stanColor,
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  backgroundColor: Color(widget.colorCategory)),
-              onPressed: () {},
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Color(widget.colorCategory)),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 7, 12, 7),
               child: Text(widget.nameCategory,
-                  style: const TextStyle(fontSize: 16))),
+                  style: const TextStyle(fontSize: 16)),
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+            padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
             child: Stack(children: [
               Container(
                 decoration: BoxDecoration(

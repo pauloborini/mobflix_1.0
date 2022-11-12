@@ -29,7 +29,7 @@ class PostDao {
   update(Post post) async {
     final Database dataBaselocal = await getDatabase();
     await dataBaselocal.update(_postsTable, _toMap(post),
-        where: '$_linkyoutube = ?', whereArgs: [post.linkyoutube]);
+        where: '$_id = ?', whereArgs: [post.id]);
   }
 
   Future<List<Post>> findAll() async {
@@ -63,10 +63,11 @@ class PostDao {
         .delete(_postsTable, where: '$_linkyoutube = ?', whereArgs: [linkpost]);
   }
 
-  List<Post> toList(List<Map<String, dynamic>> postsList) {
+  List<Post> toList(List<Map<String, dynamic>> postList) {
     final List<Post> posts = [];
-    for (Map<String, dynamic> row in postsList) {
+    for (Map<String, dynamic> row in postList) {
       final Post post = Post(
+        id: row[_id],
         linkyoutube: row[_linkyoutube],
         nameCategory: row[_nameCategory],
         colorCategory: row[_colorCategory],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'components/utilities/colors_and_vars.dart';
 import 'screens/form_post_screen.dart';
 import 'screens/initial_screen.dart';
 
@@ -8,6 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
@@ -16,8 +18,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mobflix',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          backgroundColor: stanColor,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+          ),
+        ),
         fontFamily: 'Roboto',
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue.shade600,
         brightness: Brightness.dark,
       ),
       initialRoute: "/initial_screen",

@@ -9,7 +9,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/initial_screen",
       routes: {
         "/initial_screen": (context) => InitialScreen(),
-        "/post_screen": (context) => const FormPostScreen(),
+        "/form_screen": (context) => const FormPostScreen(),
       },
     );
   }

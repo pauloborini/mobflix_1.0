@@ -21,9 +21,12 @@ App de trailers, que podem ser enviados com o link direto do Youtube ou o ID do 
 Ao abrir o projeto executar o "Pub get" no arquivo pubspec.yaml e depois rodar no emulador.
 
 <h3 align="left">Features</h3>
-Será upado um vídeo para demonstração.
-
 <div align="center">
+
+
+https://user-images.githubusercontent.com/86570695/202700653-3b995e6a-4f6e-42ef-a84a-c0793e74668a.mp4
+
+
 </div>
 <h3 align="left">Connect with me:</h3>
 <p align="left">
